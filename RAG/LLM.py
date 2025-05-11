@@ -8,7 +8,7 @@ chat_model = ChatOpenAI(openai_api_base = "http://localhost:1234/v1", openai_api
 ###use for ollama
 # from langchain_community.llms import Ollama
 
-# llm = Ollama(model="llama3.2:1b")
+# chat_model = Ollama(model="llama3.2:1b")
 
 messages = [HumanMessage(content="Explain how 1 plus 1 is 2")]
 
