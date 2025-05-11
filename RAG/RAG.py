@@ -18,7 +18,7 @@ llm = ChatOpenAI(openai_api_base = "http://localhost:1234/v1", openai_api_key = 
 
 
 
-loader = PDFPlumberLoader(r"D:\Petramount\Courses\AI\LLM\1+The+structured+Prompt.pdf")
+loader = PDFPlumberLoader(r"D:\Petramount\Courses\AI\LLM\Basic_Home_Remedies.pdf")
 docs = loader.load()
 
 # Check the number of pages
@@ -44,9 +44,10 @@ retriever = vector.as_retriever(search_type="similarity", search_kwargs={"k": 3}
 
 
 prompt = """
-1. Use the following pieces of context to answer the question at the end.
-2. If you don't know the answer, just say that "I don't know" but don't make up an answer on your own.\n
-3. Keep the answer crisp and limited to 3,4 sentences.
+1. You are doctor
+2. Use the following pieces of context to answer the question at the end.
+3. Answer only by using the context and articulate it better
+4. Keep the answer crisp and limited to 3,4 sentences.
 
 Context: {context}
 
