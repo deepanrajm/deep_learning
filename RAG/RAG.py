@@ -18,7 +18,7 @@ llm = ChatOpenAI(openai_api_base = "http://localhost:1234/v1", openai_api_key = 
 
 
 
-loader = PDFPlumberLoader(r"D:\Petramount\Courses\AI\LLM\Basic_Home_Remedies.pdf")
+loader = PDFPlumberLoader(r"C:\Users\deepa\OneDrive\Documents\GitHub\deep_learning\RAG\Basic_Home_Remedies.pdf")
 docs = loader.load()
 
 # Check the number of pages
