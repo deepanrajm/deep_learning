@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ollama Chat (llama3.2:1b)</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+    textarea, button { width: 100%; padding: 10px; margin-top: 10px; }
+    pre { background: #f4f4f4; padding: 10px; white-space: pre-wrap; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Chat with Ollama (llama3.2:1b)</h2>
+  <textarea id="prompt" rows="4" placeholder="Enter your prompt..."></textarea>
+  <button onclick="sendPrompt()">Send</button>
+  <pre id="response">Response will appear here...</pre>
+
+  <script>
+    async function sendPrompt() {
+      const prompt = document.getElementById("prompt").value;
+      const responseBox = document.getElementById("response");
+      responseBox.textContent = "Loading...";
+
+//      const payload = {
+//        model: "llama3.2:1b",
+ //       messages: [{ role: "user", content: prompt }],
+  //      stream: false
+   //   };
+        const payload = {
+          model: "llama3.2:1b",
+          messages: [
+          { role: "system", content: "You are a helpful assistant, Keep the reply short and informative" },
+          { role: "user", content: prompt }
+          ],
+        stream: false
+        };
+
+      try {
+        const res = await fetch("http://localhost:11434/v1/chat/completions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        const message = data.choices?.[0]?.message?.content || "No response.";
+        responseBox.textContent = message;
+      } catch (err) {
+        responseBox.textContent = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
