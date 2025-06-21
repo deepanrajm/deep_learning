@@ -1,35 +1,33 @@
 import streamlit as st
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import HumanMessage
 
-# Set page config
-st.set_page_config(page_title="LM Studio Chat", layout="centered")
+# Set page config FIRST — must be the first Streamlit command
+st.set_page_config(page_title="BERT QA", layout="wide")
 
-st.title("💬 Chat with LM Studio")
+from transformers import pipeline
 
-# Input from user
-user_input = st.text_area("Enter your message:", height=150)
+# Load QA pipeline with BERT model
+@st.cache_resource
+def load_qa_pipeline():
+    model_name = "deepset/bert-large-uncased-whole-word-masking-squad2"
+    return pipeline("question-answering", model=model_name, tokenizer=model_name)
 
-# Initialize chat model (pointing to LM Studio local server)
-chat_model = ChatOpenAI(
-    openai_api_base="http://localhost:1234/v1",
-    openai_api_key="lm_studio",  # Dummy key, just needs to be present
-    model="llama-3.2-1b-instruct"  # Replace with your actual model name if needed
-)
+nlp = load_qa_pipeline()
 
-# Button to send message
-if st.button("Send"):
-    if user_input.strip():
-        with st.spinner("Thinking..."):
-            # Build message list
-            messages = [HumanMessage(content=user_input)]
-            
-            # Get response from model
-            try:
-                response = chat_model(messages)
-                st.markdown("**Response:**")
-                st.success(response.content)
-            except Exception as e:
-                st.error(f"Error communicating with model: {e}")
-    else:
-        st.warning("Please enter a message first.")
+# Streamlit UI
+st.title("🤖 BERT-based Q&A using HuggingFace")
+
+context = st.text_area("📄 Enter Context", height=200, value="""
+Trainer: Deepan Raj;
+Session 1: Intro about Arenas & LLMs;
+Session 2: Hands-on on LLMs
+Session 3: LangChain - Intro
+""")
+
+question = st.text_input("❓ Ask a Question", value="What's the session 1?")
+
+if st.button("Get Answer"):
+    with st.spinner("Thinking..."):
+        QA_input = {"question": question, "context": context}
+        result = nlp(QA_input)
+        st.success(f"🧠 **Answer**: {result['answer']}")
+        st.caption(f"Score: {result['score']:.2f} | Start: {result['start']}, End: {result['end']}")
