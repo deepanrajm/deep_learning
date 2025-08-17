@@ -67,7 +67,7 @@ Task:
     response = client.chat.completions.create(
         model="local-model",
         messages=[{"role":"user", "content": prompt}],
-        temperature=0.2
+        temperature=0.4
     )
     return response.choices[0].message.content.strip()
 
