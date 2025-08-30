@@ -1,0 +1,45 @@
+uv init  - initialize environment
+uv venv  - create virtural env
+.venv\Scripts\activate  - activate env
+mcp dev local.py - debug mode
+mcp install local.py - add json value to claude space
+
+
+
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("LocalNotes")
+
+
+@mcp.tool()
+
+def add_note_to_file(content: str)-> str:
+    """Appends the given content to the users local notes.
+    
+    Args:
+        content: The text content to append."""
+    
+    filename = r"D:\Petramount\GL\LLMs\new_test\notes.txt"
+
+    try:
+        with open(filename, "a", encoding="utf-8") as f:
+            f.write(content + "\n")
+        return f"Content appended   to {filename}."
+    except Exception as e:
+        return f"An error occurred: {e}"
+    
+@mcp.tool()
+def read_notes_file(content: str) -> str:
+    """Reads and returns the content of the user's local notes."""
+    
+    filename = r"D:\Petramount\GL\LLMs\new_test\notes.txt"
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            return f.read()
+        return notes if notes else  "No Notes found."
+    except FileNotFoundError:
+        return f"{filename} does not exist."
+    except Exception as e:
+        return f"Error reading file {filename} : {e}"
+     
+    
