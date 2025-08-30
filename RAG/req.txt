@@ -12,6 +12,8 @@ pip install pdfplumber==0.11.0
 pip install gradio==4.25.0
 pip install sentence-transformers
 pip install openai
+pip install streamlit
+pip install openai
 
 
 https://linktr.ee/deepanrajm

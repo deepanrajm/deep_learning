@@ -79,7 +79,7 @@ Task:
 {tester_task}
 
 Code:
-
+{code}
 
 Output:
 1. Test cases code.
