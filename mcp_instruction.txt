@@ -1,6 +1,10 @@
 uv init  - initialize environment
 uv venv  - create virtural env
 .venv\Scripts\activate  - activate env
+
+uv pip install fastmcp
+uv pip install mcp[cli]
+
 mcp dev local.py - debug mode
 mcp install local.py - add json value to claude space
 
