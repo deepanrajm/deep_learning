@@ -1,1 +1,11 @@
+python -m venv venv
+venv\Scripts\activate
+python -m pip install --upgrade pip
+
+pip install langchain langchain-openai python-dotenv "fastapi[all]"
+
 uvicorn mcp_server:app --host 127.0.0.1 --port 8888
+
+uvicorn mcp_server:app --reload
+
+http://127.0.0.1:8000/docs
