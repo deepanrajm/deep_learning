@@ -42,10 +42,10 @@ tools = [
 
 
 llm = ChatOpenAI(
-    model="deepseek/deepseek-chat-v3.1:free",  
+    model="deepseek/deepseek-r1-0528:free",  
     temperature=0.7,
     openai_api_base="https://openrouter.ai/api/v1",
-    openai_api_key="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",
+    openai_api_key="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",
     request_timeout=60,
 )
 

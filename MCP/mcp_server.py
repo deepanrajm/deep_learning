@@ -8,7 +8,8 @@ from typing import Dict, Any
 app = FastAPI(title="ToolServer")
 
 # 3. --- Define Your Tools ---
-NOTES_FILE_PATH = os.path.join(os.getcwd(), "notes.txt")
+NOTES_FILE_PATH = r"D:\Petramount\GL\LLMs\test-c3\notes.txt"
+print (NOTES_FILE_PATH)
 
 def add_note_to_file(content: str) -> str:
     """Appends the given content to the user's local notes file."""
