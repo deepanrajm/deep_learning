@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>AI Sentiment Analyzer</title>
+  <style>
+    body { font-family: sans-serif; max-width: 680px; margin: 60px auto; padding: 0 20px; }
+    h1 { font-size: 24px; }
+    textarea { width: 100%; height: 140px; padding: 12px; font-size: 15px;
+               border: 1px solid #ccc; border-radius: 8px; resize: vertical; box-sizing: border-box; }
+    input[type=text] { width: 100%; padding: 9px 12px; margin-top: 8px; font-size: 14px;
+                       border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+    button { margin-top: 12px; padding: 10px 28px; background: #4F46E5;
+             color: white; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+    button:disabled { opacity: 0.5; }
+    #result { margin-top: 24px; padding: 20px; border-radius: 10px; display: none; text-align: center; }
+    .positive { background: #ECFDF5; border: 1px solid #6EE7B7; }
+    .negative { background: #FEF2F2; border: 1px solid #FCA5A5; }
+    .emoji { font-size: 48px; }
+    .label { font-size: 22px; font-weight: 600; margin: 8px 0 4px; }
+    .score { font-size: 14px; color: #6B7280; }
+    .bar-wrap { background: #E5E7EB; border-radius: 99px; height: 10px; margin-top: 12px; }
+    .bar { height: 10px; border-radius: 99px; transition: width 0.5s ease; }
+    #error { color: red; margin-top: 10px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>☁️ Cloud AI Sentiment Analyzer</h1>
+  <p style="color:#6B7280">DistilBERT · Cloudflare Tunnel · Google Colab</p>
+
+  <textarea id="inputText" placeholder="Type or paste any text — a review, tweet, feedback..."></textarea>
+  <input type="text" id="apiUrl" placeholder="Paste your trycloudflare.com URL here"/>
+
+  <button id="btn" onclick="analyze()">Analyze Sentiment</button>
+  <div id="error"></div>
+
+  <div id="result">
+    <div class="emoji" id="emoji"></div>
+    <div class="label" id="label"></div>
+    <div class="score" id="score"></div>
+    <div class="bar-wrap"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <script>
+    async function analyze() {
+      const text = document.getElementById("inputText").value.trim();
+      const url  = document.getElementById("apiUrl").value.trim().replace(/\/$/, "");
+      const btn  = document.getElementById("btn");
+      const err  = document.getElementById("error");
+      const res  = document.getElementById("result");
+      err.textContent = "";
+      res.style.display = "none";
+
+      if (!url)            { err.textContent = "Please enter your Cloudflare URL."; return; }
+      if (text.length < 5) { err.textContent = "Please enter some text."; return; }
+
+      btn.disabled = true;
+      btn.textContent = "Analyzing...";
+
+      try {
+        const r    = await fetch(`${url}/analyze`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        });
+        const data = await r.json();
+        if (data.error) throw new Error(data.error);
+
+        const pos = data.label === "POSITIVE";
+        document.getElementById("emoji").textContent = pos ? "😊" : "😞";
+        document.getElementById("label").textContent = pos ? "Positive" : "Negative";
+        document.getElementById("score").textContent = `Confidence: ${data.score}%`;
+        document.getElementById("bar").style.width      = data.score + "%";
+        document.getElementById("bar").style.background = pos ? "#10B981" : "#EF4444";
+        res.className      = pos ? "positive" : "negative";
+        res.style.display  = "block";
+      } catch (e) {
+        err.textContent = "Error: " + e.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Analyze Sentiment";
+      }
+    }
+  </script>
+</body>
+</html>
