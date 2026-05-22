@@ -8,7 +8,7 @@ from typing import Dict, Any
 app = FastAPI(title="ToolServer")
 
 # 3. --- Define Your Tools ---
-NOTES_FILE_PATH = r"D:\Petramount\GL\LLMs\test-c3\notes.txt"
+NOTES_FILE_PATH = r"C:\Deepan_Workspace\My_Works\Git_Codes\deep_learning\MCP\notes.txt"
 print (NOTES_FILE_PATH)
 
 def add_note_to_file(content: str) -> str:
