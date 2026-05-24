@@ -1,0 +1,42 @@
+{
+  "mcpServers": {
+    "airbnb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@openbnb/mcp-server-airbnb"
+      ]
+    },
+    "local_notes": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\Deepan_Workspace\\My_Works\\Projects\\claude_code_test",
+        "run",
+        "fastmcp",
+        "run",
+        "local.py"
+      ]
+    }
+  },
+  "preferences": {
+    "coworkScheduledTasksEnabled": false,
+    "ccdScheduledTasksEnabled": false,
+    "sidebarMode": "chat",
+    "coworkWebSearchEnabled": true,
+    "remoteToolsDeviceName": "deepan",
+    "epitaxyPrefs": {
+      "starred-local-code-sessions": [],
+      "starred-cowork-spaces": [],
+      "starred-session-groups": [],
+      "dframe-local-slice": {
+        "pinnedOrder": [],
+        "customGroupAssignments": {},
+        "customGroupOrder": {}
+      }
+    },
+    "bypassPermissionsGateByAccount": {
+      "aff7d508-05aa-4232-84bd-4ad153b4da8f": false
+    }
+  }
+}
