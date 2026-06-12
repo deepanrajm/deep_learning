@@ -1,3 +1,4 @@
+# mcp_client.py
 import requests
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import Tool
@@ -13,27 +14,67 @@ def call_mcp_tool(tool_name: str, arguments: dict) -> str:
         response.raise_for_status()
         return response.json().get("result", "No result found in response.")
     except Exception as e:
-        return f"ERROR: {e}"
+        return f"ERROR calling {tool_name}: {e}"
 
-# Define tools
+# Define tools (covering notes + math)
 tools = [
     Tool(
         name="add_note_to_file",
-        func=lambda content_str: call_mcp_tool("add_note_to_file", {"content": content_str}),
+        func=lambda content: call_mcp_tool("add_note_to_file", {"content": content}),
         description="Append text to the notes file."
     ),
     Tool(
         name="read_notes_file",
         func=lambda _: call_mcp_tool("read_notes_file", {}),
         description="Read the current content of the notes file."
-    )
+    ),
+    Tool(
+        name="add",
+        func=lambda a_b: call_mcp_tool("add", {"a": a_b[0], "b": a_b[1]}),
+        description="Add two numbers."
+    ),
+    Tool(
+        name="subtract",
+        func=lambda a_b: call_mcp_tool("subtract", {"a": a_b[0], "b": a_b[1]}),
+        description="Subtract b from a."
+    ),
+    Tool(
+        name="multiply",
+        func=lambda a_b: call_mcp_tool("multiply", {"a": a_b[0], "b": a_b[1]}),
+        description="Multiply two numbers."
+    ),
+    Tool(
+        name="divide",
+        func=lambda a_b: call_mcp_tool("divide", {"a": a_b[0], "b": a_b[1]}),
+        description="Divide a by b."
+    ),
+    Tool(
+        name="power",
+        func=lambda a_b: call_mcp_tool("power", {"base": a_b[0], "exponent": a_b[1]}),
+        description="Raise base to exponent."
+    ),
+    Tool(
+        name="sqrt",
+        func=lambda a: call_mcp_tool("sqrt", {"a": a}),
+        description="Square root of a number."
+    ),
+    Tool(
+        name="modulo",
+        func=lambda a_b: call_mcp_tool("modulo", {"a": a_b[0], "b": a_b[1]}),
+        description="Modulo operation a % b."
+    ),
+    Tool(
+        name="absolute",
+        func=lambda a: call_mcp_tool("absolute", {"a": a}),
+        description="Absolute value of a number."
+    ),
 ]
 
 # Define LLM
 llm = ChatOpenAI(
     model="google/gemma-4-e4b",
     temperature=0.7,
-    openai_api_base="http://localhost:1234/v1",  # ✅ adjust to your server
+    openai_api_base="http://localhost:1234/v1",  # ✅ matches your backend
     openai_api_key="dummy",
     request_timeout=60,
 )
@@ -43,7 +84,7 @@ agent = create_react_agent(llm, tools)
 
 if __name__ == "__main__":
     print("🤖 Agent is ready to chat!")
-    print("   You can ask it to 'add a note' or 'read my notes'.")
+    print("   You can ask it to 'add a note', 'read my notes', or do math like 'sqrt 16'.")
     print("   Type 'exit' or 'quit' to end the session.")
 
     while True:
