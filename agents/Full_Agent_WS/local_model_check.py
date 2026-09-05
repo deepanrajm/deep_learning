@@ -3,7 +3,7 @@
 # ── Local Model ─────────────────────────────
 API_KEY   = 'lm-studio'
 BASE_URL  = 'http://localhost:1234/v1'
-MODEL     = 'google/gemma-4-e4b'
+MODEL     = 'google/gemma-3-1b'
 
 
 # ── Import Packages ─────────────────────────────
