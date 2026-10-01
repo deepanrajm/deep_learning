@@ -19,4 +19,4 @@ def get_llm():
     )
 
 llm = get_llm()
-print('LLM test:', llm.invoke('Say hello in one word.').content)
+print('LLM test:', llm.invoke('who are you? and what are your capabilities?').content)
